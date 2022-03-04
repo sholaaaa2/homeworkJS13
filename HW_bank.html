@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    table{text-align:center;background-color:black;color:white;margin:10px auto}
+    td,th,table{border: 2px solid rgb(88, 88, 88);}
+    th{font-size:1.3rem}
+    div{text-align:center;font-size:1.6rem;font-weight:bold;margin:10px auto; text-shadow:0 0 5px rgb(96, 96, 96)}
+    button{margin:auto;display:block;height: 40px;width: 200px;font-size:1.3rem;background-color:rgb(96, 96, 96);color: rgb(179, 174, 174);text-shadow:1px 1px 0px white}
+  </style>
+</head>
+<body>
+  <div class="">
+    Курс валют
+  </div>
+<button id="btn" type="button" name="button">Получить курс</button>
+  <script>
+
+    btn.onclick = () => {
+      const table = document.createElement("table");
+      const tbody = document.createElement("tbody");
+      const tr = document.createElement("tr");
+
+
+      document.body.append(table);
+      table.append(tbody);
+      tbody.append(tr);
+      for (var i = 0; i < 3; i++) {
+        let th = document.createElement("th");
+        if (i == 0) {
+          th.innerHTML = "Название валюты"
+        } else if (i == 1) {
+          th.innerHTML = "Наименнование валюты"
+        } else {
+          th.innerHTML = "Цена валюты"
+        };
+
+        tr.append(th);
+      }
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json");
+      let arr = [];
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          arr = JSON.parse(xhr.responseText);
+          let arrSorted = arr.filter(i => i.rate >=25).sort((a, b) => a.rate - b.rate);
+          createValuteTable(arrSorted);
+
+        }
+      }
+      xhr.send();
+
+      function createValuteTable(arrExemple) {
+        arrExemple.forEach(item => {
+          const tr1 = document.createElement("tr");
+          let td1 = document.createElement("td"),
+          td2 = document.createElement("td"),
+          td3 = document.createElement("td");
+
+          td1.innerHTML = item.txt;
+          td2.innerHTML = item.cc;
+          td3.innerHTML = item.rate;
+
+          tbody.append(tr1);
+          tr1.append(td1);
+          tr1.append(td2);
+          tr1.append(td3);
+        });
+      }
+
+      btn.remove();
+    }
+
+
+  </script>
+</body>
+</html>
