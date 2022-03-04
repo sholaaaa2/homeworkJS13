@@ -58,22 +58,39 @@
 
       function createValuteTable(arrExemple) {
         arrExemple.forEach(item => {
-          const tr1 = document.createElement("tr");
-          let td1 = document.createElement("td"),
-          td2 = document.createElement("td"),
-          td3 = document.createElement("td");
+          try {
+            if (!item.txt) {
+              throw new errorReport("MissingTxt: ","no txt given")
+            }
+            if (!item.cc) {
+              throw new errorReport("MissingCc: ","no cc given")
+            }
+            if (!item.rate) {
+              throw new errorReport("MissingRate: ","no rate given")
+            }
+            const tr1 = document.createElement("tr");
+            let td1 = document.createElement("td"),
+            td2 = document.createElement("td"),
+            td3 = document.createElement("td");
 
-          td1.innerHTML = item.txt;
-          td2.innerHTML = item.cc;
-          td3.innerHTML = item.rate;
+            td1.innerHTML = item.txt;
+            td2.innerHTML = item.cc;
+            td3.innerHTML = item.rate;
 
-          tbody.append(tr1);
-          tr1.append(td1);
-          tr1.append(td2);
-          tr1.append(td3);
+            tbody.append(tr1);
+            tr1.append(td1);
+            tr1.append(td2);
+            tr1.append(td3);
+
+          } catch (e) {
+            document.write(e.name+e.msg)
+          }
         });
       }
-
+      function errorReport(name,msg) {
+        this.name = name;
+        this.msg = msg;
+      }
       btn.remove();
     }
 
@@ -81,3 +98,4 @@
   </script>
 </body>
 </html>
+
